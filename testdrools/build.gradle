@@ -1,0 +1,31 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'application'
+
+
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+}
+
+
+repositories {
+    jcenter()
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    compile 'ch.qos.logback:logback-classic:1.2.3'
+    compile 'org.kie:kie-api:7.43.1.Final'
+    compile 'org.drools:drools-core:7.43.1.Final'
+    compile 'org.drools:drools-compiler:7.43.1.Final'
+    compile 'org.jetbrains:annotations:18.0.0'
+    testCompile 'junit:junit:4.12'
+    testCompile "org.mockito:mockito-core:2.+"
+}
+
+
+run {
+    standardInput = System.in
+}

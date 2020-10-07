@@ -1,0 +1,50 @@
+//created on: 29 Sep 2020
+package test.events.continuous
+
+import java.util.List;
+import com.testing.drools.test.events.continuous.*;
+import org.slf4j.Logger;
+import com.testing.drools.test.*;
+
+global Logger logger;
+
+
+declare AnomalyCount
+ @role(event)
+ @timestamp(anomalyDate)
+ @expires(1d)
+end
+
+rule "insert anomaly count"
+  dialect "java"
+
+  when
+     $aei: AnomalyEventInsert()
+     not AnomalyCount(anomalyDate == $aei.ts)
+
+  then
+     insert(new AnomalyCount($aei.getTs(), 1));
+     delete($aei);
+end
+
+rule "increment count"
+  dialect "java"
+
+  when
+     $aei: AnomalyEventInsert()
+     $ac: AnomalyCount(anomalyDate == $aei.ts)
+
+  then
+     modify($ac) { setAnomalyCount($ac.getAnomalyCount() + 1)};
+     delete($aei);
+end
+
+rule "Check continuous 3 days"
+   dialect "java"
+
+when
+ $anomalies : List() from accumulate(AnomalyCount($dt : anomalyDate) over window:time(3d);collectList( $dt ))
+then
+     System.out.println("anomalies: "+ $anomalies);
+end
+
