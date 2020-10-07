@@ -1,0 +1,2 @@
+# droolsExperiments
+Trying out drools
