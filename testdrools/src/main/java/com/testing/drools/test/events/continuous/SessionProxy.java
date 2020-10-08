@@ -1,6 +1,7 @@
 package com.testing.drools.test.events.continuous;
 
 
+import org.drools.core.time.SessionPseudoClock;
 import org.kie.api.KieServices;
 import org.kie.api.KieServices.Factory;
 import org.kie.api.runtime.KieContainer;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public abstract class SessionProxy {
     protected static Logger logger = LoggerFactory.getLogger(SessionProxy.class);
@@ -38,10 +40,12 @@ public abstract class SessionProxy {
         return var2.newKieSession(this.getSessionName());
     }
 
-    public void insert(Object var1) throws IOException {
+    public void insert(AnomalyEventInsert var1) throws IOException {
         this.eventReceivedInfile = true;
         KieSession var3 = this.getSession();
+        SessionPseudoClock clock = var3.getSessionClock();
         var3.insert(var1);
+        clock.advanceTime(var1.ts.getTime() -  clock.getCurrentTime(), TimeUnit.MILLISECONDS);
         var3.fireAllRules();
 
     }

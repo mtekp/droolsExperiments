@@ -3,7 +3,7 @@
          xmlns="http://www.drools.org/xsd/kmodule">
 
   <kbase name="TestEventsC" packages="test.events.continuous" eventProcessingMode="stream">
-        <ksession name="TestDroolEventsContinous" clockType="realtime"/>
+        <ksession name="TestDroolEventsContinous" clockType="pseudo"/>
     </kbase>
     
 </kmodule>
