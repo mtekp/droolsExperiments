@@ -2,7 +2,6 @@ package com.testing.drools.test.events.continuous;
 
 import static java.util.concurrent.TimeUnit.DAYS;
 
-import java.io.IOException;
 import java.util.Date;
 
 import org.droolsassert.DroolsAssert;
@@ -17,7 +16,7 @@ public class TestDroolEventsContinousTest extends DroolsAssert {
 	public DroolsAssert droolsAssert = this;
 	
 	@Test
-	public void withInitialState() throws IOException {
+	public void withInitialState() {
 		
 		insertAndFire(new AnomalyEventInsert(new Date(DAYS.toMillis(0))));
 		insertAndFire(new AnomalyEventInsert(new Date(DAYS.toMillis(0))));
